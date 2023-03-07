@@ -15,11 +15,8 @@ class _ElephantAppState extends State<ElephantApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      appBar: AppBar(title: const Center(child: Text('Elephant'))),
       home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Elephant'),
-        ),
+        appBar: AppBar(title: const Center(child: Text('Elephant'))),
         floatingActionButton: FloatingActionButton(
           onPressed: () {},
           child: Icon(Icons.add),
