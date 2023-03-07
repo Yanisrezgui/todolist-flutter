@@ -3,43 +3,48 @@ import 'package:faker/faker.dart';
 import '../models/task.dart';
 
 class TasksMaster extends StatefulWidget {
-  const TasksMaster({Key? key}) : super(key: key);
-
   @override
   _TasksMasterState createState() => _TasksMasterState();
 }
 
 class _TasksMasterState extends State<TasksMaster> {
-  Future<List<Task>> _fetchTasks() async {
-    List<Task> tasks = [];
-    for (int i = 0; i < 100; i++) {
-      Task task = Task(
-        id: i,
-        content: faker.lorem.sentence(),
-        completed: false,
-        title: 'Task $i',
-      );
-      tasks.add(task);
-    }
-    return tasks;
-  }
+  late Future<List<Task>> _futureTasks;
 
   @override
+  void initState() {
+    super.initState();
+    _futureTasks = _fetchTasks();
+  }
+
+  Future<List<Task>> _fetchTasks() async {
+    List<Task> list = [];
+    for (int i = 0; i <= 10; i++) {
+      list.add(Task(
+          id: i,
+          content: Faker().lorem.sentence(),
+          completed: Faker().randomGenerator.boolean(),
+          title: Faker().lorem.sentence()));
+    }
+    list[2].title = "hello";
+    return list;
+  }
+
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: _fetchTasks(),
+    return FutureBuilder<List<Task>>(
+      future: _futureTasks,
       builder: (BuildContext context, AsyncSnapshot<List<Task>> snapshot) {
         if (snapshot.hasData) {
+          List<Task> tasks = snapshot.data!;
           return ListView.builder(
-            itemCount: snapshot.data!.length,
+            itemCount: tasks.length,
             itemBuilder: (BuildContext context, int index) {
-              Task task = snapshot.data![index];
+              Task task = tasks[index];
               return ListTile(
-                title: Text(task.title ?? ""),
+                title: Text(task.title ?? "No title"),
                 subtitle: Text(task.content),
                 trailing: Checkbox(
                   value: task.completed,
-                  onChanged: (value) {
+                  onChanged: (bool? value) {
                     setState(() {
                       task.completed = value!;
                     });
@@ -48,8 +53,10 @@ class _TasksMasterState extends State<TasksMaster> {
               );
             },
           );
+        } else if (snapshot.hasError) {
+          return Text("${snapshot.error}");
         } else {
-          return const Center(child: CircularProgressIndicator());
+          return CircularProgressIndicator();
         }
       },
     );
