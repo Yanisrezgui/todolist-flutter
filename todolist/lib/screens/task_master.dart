@@ -12,7 +12,6 @@ class TasksMaster extends StatefulWidget {
 class _TasksMasterState extends State<TasksMaster> {
   Future<List<Task>> _fetchTasks() async {
     List<Task> tasks = [];
-
     for (int i = 0; i < 100; i++) {
       Task task = Task(
         id: i,
@@ -22,43 +21,37 @@ class _TasksMasterState extends State<TasksMaster> {
       );
       tasks.add(task);
     }
-
     return tasks;
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Tasks Master'),
-      ),
-      body: FutureBuilder(
-        future: _fetchTasks(),
-        builder: (BuildContext context, AsyncSnapshot<List<Task>> snapshot) {
-          if (snapshot.hasData) {
-            return ListView.builder(
-              itemCount: snapshot.data!.length,
-              itemBuilder: (BuildContext context, int index) {
-                Task task = snapshot.data![index];
-                return ListTile(
-                  title: Text(task.title ?? ""),
-                  subtitle: Text(task.content),
-                  trailing: Checkbox(
-                    value: task.completed,
-                    onChanged: (value) {
-                      setState(() {
-                        task.completed = value!;
-                      });
-                    },
-                  ),
-                );
-              },
-            );
-          } else {
-            return Center(child: CircularProgressIndicator());
-          }
-        },
-      ),
+    return FutureBuilder(
+      future: _fetchTasks(),
+      builder: (BuildContext context, AsyncSnapshot<List<Task>> snapshot) {
+        if (snapshot.hasData) {
+          return ListView.builder(
+            itemCount: snapshot.data!.length,
+            itemBuilder: (BuildContext context, int index) {
+              Task task = snapshot.data![index];
+              return ListTile(
+                title: Text(task.title ?? ""),
+                subtitle: Text(task.content),
+                trailing: Checkbox(
+                  value: task.completed,
+                  onChanged: (value) {
+                    setState(() {
+                      task.completed = value!;
+                    });
+                  },
+                ),
+              );
+            },
+          );
+        } else {
+          return const Center(child: CircularProgressIndicator());
+        }
+      },
     );
   }
 }

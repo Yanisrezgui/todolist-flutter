@@ -1,28 +1,34 @@
 import 'package:flutter/material.dart';
-import 'models/task.dart';
+import 'package:todolist/screens/task_master.dart';
 
-class ElephantApp extends StatefulWidget {
-  const ElephantApp({super.key, required String title});
+class Elephant_App extends StatefulWidget {
+  const Elephant_App({super.key});
 
   @override
-  _ElephantAppState createState() => _ElephantAppState();
+  _Elephant_AppState createState() => _Elephant_AppState();
 }
 
-class _ElephantAppState extends State<ElephantApp> {
-  final List<Task> _tasks = [];
-
+class _Elephant_AppState extends State<Elephant_App> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
+      title: 'Elephant App',
       home: Scaffold(
-        appBar: AppBar(title: const Center(child: Text('Elephant'))),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {},
-          child: Icon(Icons.add),
-        ),
-        body: Container(),
-      ),
+          appBar: AppBar(
+            title: const Text('Elephant'),
+          ),
+          body: Container(
+            // ici, vous pouvez définir le contenu de votre application
+            child: TasksMaster(),
+          ),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              print("ok");
+              // ici, vous pouvez définir ce qui se passe lorsque vous appuyez sur le bouton
+            },
+            tooltip: 'Ajouter un éléphant',
+            child: Icon(Icons.add),
+          )),
     );
   }
 }
