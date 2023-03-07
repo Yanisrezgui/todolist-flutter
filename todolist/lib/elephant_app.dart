@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import './task.dart';
+import 'models/task.dart';
 
 class ElephantApp extends StatefulWidget {
   const ElephantApp({super.key, required String title});
