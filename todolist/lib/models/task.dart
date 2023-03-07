@@ -4,8 +4,5 @@ class Task {
   bool completed;
   String? title;
 
-  Task({
-    required this.content,
-    required this.completed,
-  });
+  Task({this.id, required this.content, required this.completed, this.title});
 }
