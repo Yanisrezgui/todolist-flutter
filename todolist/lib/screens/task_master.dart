@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:faker/faker.dart';
 import '../models/task.dart';
+import '../screens/task_preview.dart';
 
 class TasksMaster extends StatefulWidget {
   @override
@@ -39,18 +40,7 @@ class _TasksMasterState extends State<TasksMaster> {
             itemCount: tasks.length,
             itemBuilder: (BuildContext context, int index) {
               Task task = tasks[index];
-              return ListTile(
-                title: Text(task.title ?? "No title"),
-                subtitle: Text(task.content),
-                trailing: Checkbox(
-                  value: task.completed,
-                  onChanged: (bool? value) {
-                    setState(() {
-                      task.completed = value!;
-                    });
-                  },
-                ),
-              );
+              return TaskPreview(task: task);
             },
           );
         } else if (snapshot.hasError) {
