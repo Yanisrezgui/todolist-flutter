@@ -26,7 +26,6 @@ class _TasksMasterState extends State<TasksMaster> {
           completed: Faker().randomGenerator.boolean(),
           title: Faker().lorem.sentence()));
     }
-    list[2].title = "hello";
     return list;
   }
 

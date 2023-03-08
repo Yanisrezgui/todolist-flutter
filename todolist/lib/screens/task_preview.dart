@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import '../models/task.dart';
 
 class TaskPreview extends StatelessWidget {
-  final Task task;
+  late Task task;
 
-  TaskPreview({required this.task});
+  TaskPreview({super.key, required this.task});
 
   @override
   Widget build(BuildContext context) {
@@ -28,12 +28,14 @@ class TaskPreview extends StatelessWidget {
       trailing: Checkbox(
         value: task.completed,
         onChanged: (bool? value) {
-          // Update the task's completed value and trigger a rebuild of the widget
-          task.completed = value!;
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text(
-                "Task ${task.title} is now ${task.completed ? "completed" : "not completed"}"),
-          ));
+          if (value != null) {
+            // Update the task's completed value and trigger a rebuild of the widget
+            task.completed = value;
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text(
+                  "Task ${task.title} is now ${task.completed ? "completed" : "not completed"}"),
+            ));
+          }
         },
       ),
     );
