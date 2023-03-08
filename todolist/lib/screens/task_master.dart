@@ -18,7 +18,7 @@ class _TasksMasterState extends State<TasksMaster> {
 
   Future<List<Task>> _fetchTasks() async {
     List<Task> list = [];
-    for (int i = 0; i <= 10; i++) {
+    for (int i = 0; i <= 100; i++) {
       list.add(Task(
           id: i,
           content: Faker().lorem.sentence(),
