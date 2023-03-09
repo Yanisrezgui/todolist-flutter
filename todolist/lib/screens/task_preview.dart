@@ -25,10 +25,10 @@ class _TaskPreviewState extends State<TaskPreview> {
     Color color;
     if (_task.completed) {
       icon = Icons.check;
-      color = Colors.green[100]!;
+      color = Colors.green[400]!;
     } else {
       icon = Icons.close;
-      color = Colors.red[100]!;
+      color = Colors.red[400]!;
     }
     return ListTile(
       title: Text(_task.title ?? "No title"),
