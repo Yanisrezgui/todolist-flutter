@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:faker/faker.dart';
 import '../models/task.dart';
 import '../screens/task_preview.dart';
+import '../screens/task_details.dart';
 
 class TasksMaster extends StatefulWidget {
   @override
@@ -39,7 +40,17 @@ class _TasksMasterState extends State<TasksMaster> {
             itemCount: tasks.length,
             itemBuilder: (BuildContext context, int index) {
               Task task = tasks[index];
-              return TaskPreview(task: task);
+              return InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => TaskDetails(task: task),
+                    ),
+                  );
+                },
+                child: TaskPreview(task: task),
+              );
             },
           );
         } else if (snapshot.hasError) {

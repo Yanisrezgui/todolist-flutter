@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todolist/screens/task_details.dart';
 import '../models/task.dart';
 
 class TaskPreview extends StatefulWidget {
