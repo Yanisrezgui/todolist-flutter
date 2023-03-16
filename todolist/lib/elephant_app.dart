@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todolist/screens/task_form.dart';
 import 'package:todolist/screens/task_master.dart';
 
 class Elephant_App extends StatefulWidget {
@@ -17,18 +18,10 @@ class _Elephant_AppState extends State<Elephant_App> {
           appBar: AppBar(
             title: const Text('Elephant'),
           ),
-          body: Container(
-            // ici, vous pouvez définir le contenu de votre application
-            child: TasksMaster(),
+          body: TasksMaster()
+          // ici, vous pouvez définir le contenu de votre application
           ),
-          floatingActionButton: FloatingActionButton(
-            onPressed: () {
-              print("ok");
-              // ici, vous pouvez définir ce qui se passe lorsque vous appuyez sur le bouton
-            },
-            tooltip: 'Ajouter un éléphant',
-            child: Icon(Icons.add),
-          )),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
