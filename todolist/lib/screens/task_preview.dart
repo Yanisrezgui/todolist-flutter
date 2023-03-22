@@ -1,58 +1,52 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:todolist/screens/task_details.dart';
+
 import '../models/task.dart';
+import '../providers/tasks_provider.dart';
 
 class TaskPreview extends StatefulWidget {
   final Task task;
 
-  TaskPreview({Key? key, required this.task}) : super(key: key);
+  const TaskPreview({required this.task});
 
   @override
   _TaskPreviewState createState() => _TaskPreviewState();
 }
 
 class _TaskPreviewState extends State<TaskPreview> {
-  late Task _task;
+  late TasksProvider _tasksProvider;
 
   @override
   void initState() {
-    _task = widget.task;
     super.initState();
+    _tasksProvider = Provider.of<TasksProvider>(context, listen: false);
+  }
+
+  void _navigateToTaskDetails(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => TaskDetails(task: widget.task)),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    IconData icon;
-    Color color;
-    if (_task.completed) {
-      icon = Icons.check;
-      color = Colors.green[400]!;
-    } else {
-      icon = Icons.close;
-      color = Colors.red[400]!;
-    }
+    Color tileColor = widget.task.completed ? Colors.green : Colors.red;
     return ListTile(
-      title: Text(_task.title ?? "No title"),
-      subtitle: Text(_task.content),
-      leading: CircleAvatar(
-        backgroundColor: color,
-        child: Icon(icon, color: Colors.white),
-      ),
+      title: Text(widget.task.title ?? "No title"),
+      subtitle: Text(widget.task.content),
       trailing: Checkbox(
-        value: _task.completed,
+        value: widget.task.completed,
         onChanged: (bool? value) {
-          if (value != null) {
-            // Update the task's completed value and trigger a rebuild of the widget
-            setState(() {
-              _task.completed = value;
-            });
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text(
-                  "Task ${_task.title} is now ${_task.completed ? "completed" : "not completed"}"),
-            ));
-          }
+          setState(() {
+            _tasksProvider.updateTask(widget.task);
+            widget.task.toggleCompleted();
+          });
         },
       ),
+      tileColor: tileColor,
+      onTap: () => _navigateToTaskDetails(context),
     );
   }
 }

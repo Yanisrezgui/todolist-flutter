@@ -1,80 +1,74 @@
+import 'dart:js_util';
+
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
 import '../models/task.dart';
+import '../providers/tasks_provider.dart';
 
 class TaskForm extends StatefulWidget {
+  // final Function addTask;
+
+  // TaskForm({required this.addTask});
+
   @override
   _TaskFormState createState() => _TaskFormState();
 }
 
 class _TaskFormState extends State<TaskForm> {
   final _formKey = GlobalKey<FormState>();
-  final _contentController = TextEditingController();
   final _titleController = TextEditingController();
+  final _contentController = TextEditingController();
 
-  @override
-  void dispose() {
-    _contentController.dispose();
-    _titleController.dispose();
-    super.dispose();
+  void _submitForm() {
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+      Task task = Task(
+        title: _titleController.text,
+        content: _contentController.text,
+        completed: false,
+      );
+      context.read<TasksProvider>().addTask(task);
+      // widget.addTask(task);
+      Navigator.pop(context);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Nouvelle tâche ajoutée!'),
+        duration: Duration(seconds: 2),
+      ));
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add New Task'),
+        title: Text('Nouvelle tâche'),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+            children: <Widget>[
               TextFormField(
                 controller: _titleController,
-                decoration: InputDecoration(
-                  hintText: 'Enter title',
-                ),
+                decoration: InputDecoration(labelText: 'Titre'),
                 validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Veuillez ajouté(e) un titre';
+                  if (value!.isEmpty) {
+                    return 'Veuillez saisir un titre';
                   }
                   return null;
                 },
               ),
-              SizedBox(height: 16),
               TextFormField(
                 controller: _contentController,
-                decoration: const InputDecoration(
-                  hintText: 'Description',
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Veuillez ajouté(e) une description';
-                  }
-                  return null;
-                },
+                decoration: InputDecoration(labelText: 'Description'),
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: 16.0),
               ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    Task newTask = Task(
-                      id: DateTime.now().millisecondsSinceEpoch,
-                      title: _titleController.text,
-                      content: _contentController.text,
-                      completed: false,
-                    );
-                    Navigator.pop(context, newTask);
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Tâche ajouté !'),
-                      ),
-                    );
-                  }
-                },
-                child: const Text('Enrengistrer'),
+                onPressed: _submitForm,
+                child: Text('Ajouter'),
               ),
             ],
           ),
